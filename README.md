@@ -314,3 +314,4 @@ For support and questions:
   - QR scanning
   - User management
   - Web and mobile applications
+
