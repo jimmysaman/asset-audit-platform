@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Audit Platform - Web Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .app-bar {
+            background: #1976d2;
+            color: white;
+            padding: 16px 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+        }
+        
+        .stat-card.assets { border-left-color: #1976d2; }
+        .stat-card.movements { border-left-color: #ff9800; }
+        .stat-card.photos { border-left-color: #4caf50; }
+        .stat-card.users { border-left-color: #9c27b0; }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            opacity: 0.7;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .asset-list {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .asset-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .asset-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+        
+        .asset-info h4 {
+            margin-bottom: 4px;
+        }
+        
+        .asset-meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        
+        .status-maintenance {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #1976d2;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .action-card {
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .action-card:hover {
+            background: #f5f5f5;
+            transform: translateY(-2px);
+        }
+        
+        .action-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            color: #1976d2;
+        }
+        
+        .login-demo {
+            background: #e3f2fd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .login-demo h3 {
+            color: #1976d2;
+            margin-bottom: 8px;
+        }
+        
+        .credentials {
+            font-family: monospace;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-bar">
+        <div class="app-title">🏢 Asset Audit Platform</div>
+        <div class="user-info">
+            <span class="material-icons">account_circle</span>
+            <span>Admin User</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="login-demo">
+            <h3>Demo Credentials</h3>
+            <div>Username: <span class="credentials">admin</span> Password: <span class="credentials">admin123</span></div>
+        </div>
+        
+        <div class="dashboard-grid">
+            <div class="stat-card assets">
+                <div class="stat-header">
+                    <span class="material-icons stat-icon">inventory</span>
+                </div>
+                <div class="stat-value">247</div>
+                <div class="stat-label">Total Assets</div>
+            </div>
+            
+            <div class="stat-card movements">
+                <div class="stat-header">
+                    <span class="material-icons stat-icon">swap_horiz</span>
+                </div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Active Movements</div>
+            </div>
+            
+            <div class="stat-card photos">
+                <div class="stat-header">
+                    <span class="material-icons stat-icon">photo_camera</span>
+                </div>
+                <div class="stat-value">1,543</div>
+                <div class="stat-label">Photos Captured</div>
+            </div>
+            
+            <div class="stat-card users">
+                <div class="stat-header">
+                    <span class="material-icons stat-icon">people</span>
+                </div>
+                <div class="stat-value">28</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">
+                <span class="material-icons">flash_on</span>
+                Quick Actions
+            </div>
+            <div class="quick-actions">
+                <div class="action-card" onclick="alert('QR Scanner would open camera for asset scanning')">
+                    <div class="material-icons action-icon">qr_code_scanner</div>
+                    <div>Scan Asset</div>
+                </div>
+                <div class="action-card" onclick="alert('Asset form would open for creating new assets')">
+                    <div class="material-icons action-icon">add_circle</div>
+                    <div>Add Asset</div>
+                </div>
+                <div class="action-card" onclick="alert('Movement form would open for asset transfers')">
+                    <div class="material-icons action-icon">swap_horiz</div>
+                    <div>Create Movement</div>
+                </div>
+                <div class="action-card" onclick="alert('Photo capture would open camera interface with GPS location tracking and description field for detailed documentation')">
+                    <div class="material-icons action-icon">photo_camera</div>
+                    <div>Take Photo</div>
+                </div>
+                <div class="action-card" onclick="alert('Site and location management interface would open for managing organizational sites and locations')">
+                    <div class="material-icons action-icon">location_on</div>
+                    <div>Manage Sites</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">
+                <span class="material-icons">inventory</span>
+                Recent Assets
+            </div>
+            <div class="asset-list">
+                <div class="asset-item">
+                    <div class="asset-info">
+                        <h4>Dell Laptop - LAP001</h4>
+                        <div class="asset-meta">Equipment • Office A • John Doe</div>
+                    </div>
+                    <span class="status-badge status-active">Active</span>
+                </div>
+                
+                <div class="asset-item">
+                    <div class="asset-info">
+                        <h4>Conference Table - FUR023</h4>
+                        <div class="asset-meta">Furniture • Meeting Room B • Unassigned</div>
+                    </div>
+                    <span class="status-badge status-active">Active</span>
+                </div>
+                
+                <div class="asset-item">
+                    <div class="asset-info">
+                        <h4>Projector - PRJ005</h4>
+                        <div class="asset-meta">Equipment • Storage • Maintenance Team</div>
+                    </div>
+                    <span class="status-badge status-maintenance">Maintenance</span>
+                </div>
+                
+                <div class="asset-item">
+                    <div class="asset-info">
+                        <h4>Office Chair - CHR089</h4>
+                        <div class="asset-meta">Furniture • Office C • Jane Smith</div>
+                    </div>
+                    <span class="status-badge status-active">Active</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">
+                <span class="material-icons">timeline</span>
+                Recent Activity
+            </div>
+            <div style="color: #666; padding: 20px; text-align: center;">
+                <div class="material-icons" style="font-size: 3rem; margin-bottom: 16px; opacity: 0.3;">history</div>
+                <div>Asset movements, photo uploads, and user actions would appear here</div>
+                <div style="margin-top: 8px; font-size: 0.9rem;">Real-time activity feed with timestamps and user attribution</div>
+            </div>
+        </div>
+    </div>
+    
+    <button class="fab" onclick="alert('QR Scanner would open for quick asset lookup')" title="Scan Asset">
+        <span class="material-icons">qr_code_scanner</span>
+    </button>
+    
+    <script>
+        // Simulate real-time updates
+        function updateStats() {
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                const currentValue = parseInt(stat.textContent);
+                const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+                const newValue = Math.max(0, currentValue + change);
+                stat.textContent = newValue;
+            });
+        }
+        
+        // Update stats every 10 seconds
+        setInterval(updateStats, 10000);
+        
+        // Add some interactivity
+        document.querySelectorAll('.asset-item').forEach(item => {
+            item.addEventListener('click', () => {
+                alert('Asset details would open showing comprehensive information, photos, movement history, and actions');
+            });
+        });
+        
+        console.log('Asset Audit Platform Demo - Web Interface');
+        console.log('This demonstrates the React web application functionality');
+        console.log('Features: Dashboard, Asset Management, Movement Tracking, Photo Documentation, User Management');
+    </script>
+</body>
+</html>
