@@ -1,8 +1,9 @@
-import axios from 'axios';
+ import axios from 'axios';
 
 // Base API configuration
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: process.env.REACT_APP_API_URL || 'https://YOUR-ACTUAL-RENDER-URL.onrender.com/api',
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },

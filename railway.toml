@@ -1,3 +1,6 @@
+# Railway configuration for Asset Audit Platform
+# This configures the backend service deployment
+
 [build]
 builder = "nixpacks"
 buildCommand = "cd backend && npm install"
@@ -6,3 +9,8 @@ buildCommand = "cd backend && npm install"
 startCommand = "cd backend && node server.js"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
+
+# Environment variables will be set in Railway dashboard:
+# - NODE_ENV=production
+# - DATABASE_URL=${{Postgres.DATABASE_URL}}
+# - JWT_SECRET=your-secret-key

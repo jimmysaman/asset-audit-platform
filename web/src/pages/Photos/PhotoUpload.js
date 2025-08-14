@@ -16,17 +16,26 @@ import {
   Alert,
   Card,
   CardMedia,
+  useTheme,
+  useMediaQuery,
+  Fab,
 } from '@mui/material';
 import { PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { photoApi, assetApi } from '../../services/api';
+import MobileCamera from '../../components/MobileCamera';
 
 const PhotoUpload = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [assets, setAssets] = useState([]);
   const [loadingAssets, setLoadingAssets] = useState(true);
   const [previewUrl, setPreviewUrl] = useState('');
+  const [cameraOpen, setCameraOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [locationData, setLocationData] = useState(null);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
@@ -72,6 +81,24 @@ const PhotoUpload = () => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleCameraCapture = (photoData, setFieldValue, setFieldTouched) => {
+    const { file, location } = photoData;
+
+    setSelectedFile(file);
+    setLocationData(location);
+    setFieldValue('photo', file);
+    setFieldTouched('photo', true, true);
+
+    // Create a preview URL
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
+
+    setCameraOpen(false);
   };
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -199,25 +226,47 @@ const PhotoUpload = () => {
                   />
 
                   <Box sx={{ mt: 2 }}>
-                    <input
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      id="photo-upload"
-                      type="file"
-                      onChange={(e) => handleFileChange(e, setFieldValue, setFieldTouched)}
-                      disabled={isSubmitting}
-                    />
-                    <label htmlFor="photo-upload">
-                      <Button
-                        variant="outlined"
-                        component="span"
-                        startIcon={<PhotoCameraIcon />}
+                    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                      <input
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        id="photo-upload"
+                        type="file"
+                        onChange={(e) => handleFileChange(e, setFieldValue, setFieldTouched)}
                         disabled={isSubmitting}
-                        sx={{ mr: 2 }}
-                      >
-                        Select Photo
-                      </Button>
-                    </label>
+                      />
+                      <label htmlFor="photo-upload">
+                        <Button
+                          variant="outlined"
+                          component="span"
+                          startIcon={<PhotoCameraIcon />}
+                          disabled={isSubmitting}
+                        >
+                          Select Photo
+                        </Button>
+                      </label>
+
+                      {isMobile && (
+                        <Button
+                          variant="contained"
+                          startIcon={<PhotoCameraIcon />}
+                          onClick={() => setCameraOpen(true)}
+                          disabled={isSubmitting}
+                        >
+                          Take Photo
+                        </Button>
+                      )}
+                    </Box>
+
+                    {locationData && (
+                      <Box sx={{ mt: 1 }}>
+                        <Typography variant="caption" color="text.secondary">
+                          📍 GPS: {locationData.latitude.toFixed(6)}, {locationData.longitude.toFixed(6)}
+                          (±{Math.round(locationData.accuracy)}m)
+                        </Typography>
+                      </Box>
+                    )}
+
                     {touched.photo && errors.photo && (
                       <FormHelperText error>{errors.photo}</FormHelperText>
                     )}
@@ -270,6 +319,28 @@ const PhotoUpload = () => {
           )}
         </Formik>
       </Paper>
+
+      {/* Mobile Camera Component */}
+      <MobileCamera
+        open={cameraOpen}
+        onClose={() => setCameraOpen(false)}
+        onCapture={(photoData) => {
+          // We'll handle this in a simpler way
+          const { file, location } = photoData;
+          setSelectedFile(file);
+          setLocationData(location);
+
+          // Create preview URL
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPreviewUrl(reader.result);
+          };
+          reader.readAsDataURL(file);
+
+          setCameraOpen(false);
+        }}
+        title="Take Asset Photo"
+      />
 
       <Snackbar
         open={snackbar.open}

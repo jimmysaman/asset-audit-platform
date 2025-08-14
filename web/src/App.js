@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, useTheme, useMediaQuery } from '@mui/material';
 
 // Layout components
 import Layout from './components/Layout/Layout';
+import MobileLayout from './components/MobileLayout';
 
 // Authentication pages
 import Login from './pages/Auth/Login';
@@ -60,7 +61,9 @@ const App = () => {
 
 const AppRoutes = () => {
   const { isAuthenticated, loading, user } = useAuth();
-  
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -69,6 +72,9 @@ const AppRoutes = () => {
     );
   }
 
+  // Choose layout based on device
+  const LayoutComponent = isMobile ? MobileLayout : Layout;
+
   return (
     <Routes>
       {/* Public routes */}
@@ -76,7 +82,7 @@ const AppRoutes = () => {
       <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to="/" />} />
       
       {/* Protected routes */}
-      <Route path="/" element={isAuthenticated ? <Layout /> : <Navigate to="/login" />}>
+      <Route path="/" element={isAuthenticated ? <LayoutComponent /> : <Navigate to="/login" />}>
         <Route index element={<Dashboard />} />
         
         {/* Asset routes */}

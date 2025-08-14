@@ -4,16 +4,15 @@ A comprehensive asset management system with web and mobile applications for tra
 
 ## 🏗️ Architecture
 
-The platform consists of three main components:
+The platform consists of two main components:
 
 - **Backend API** - Node.js/Express REST API with PostgreSQL/SQLite database
-- **Web Application** - React.js web interface with Material-UI
-- **Mobile Application** - React Native mobile app with camera and QR scanning
+- **Web Application** - React.js responsive web interface with Material-UI, mobile camera, and GPS support
 
 ## 📁 Project Structure
 
 ```
-audit-app/
+asset-audit-platform/
 ├── backend/           # Node.js API server
 │   ├── src/
 │   │   ├── controllers/   # Route controllers
@@ -26,23 +25,18 @@ audit-app/
 │   ├── uploads/           # File upload directory
 │   ├── package.json
 │   └── server.js          # Entry point
-├── web/               # React web application
+├── web/               # React responsive web application
 │   ├── src/
 │   │   ├── components/    # Reusable components
+│   │   │   ├── MobileCamera.js    # Mobile camera component
+│   │   │   ├── MobileLayout.js    # Mobile-responsive layout
+│   │   │   └── QRScanner.js       # QR code scanner
 │   │   ├── pages/         # Page components
 │   │   ├── services/      # API services & auth
 │   │   └── __tests__/     # Frontend tests
 │   ├── public/
 │   └── package.json
-├── mobile/            # React Native mobile app
-│   ├── src/
-│   │   ├── screens/       # Mobile screens
-│   │   ├── context/       # React context
-│   │   ├── services/      # API services
-│   │   └── utils/         # Utilities
-│   ├── android/           # Android-specific files
-│   ├── ios/               # iOS-specific files
-│   └── package.json
+├── railway.toml       # Railway deployment config
 └── README.md
 ```
 
@@ -171,16 +165,16 @@ Default admin credentials:
 - Audit log viewing
 - Profile management
 
-### Mobile Application Features
+### Mobile-Responsive Features
 
-- Native camera integration
-- QR/Barcode scanning
-- Offline-capable asset viewing
-- Photo capture and upload with detailed descriptions
+- Fully responsive web application that works on all devices
+- Mobile camera integration for photo capture (web browsers)
+- QR code and barcode scanning (web-based)
+- Touch-friendly interface with bottom navigation
 - GPS location capture with photos
-- Movement creation with location tracking
-- Push notifications (planned)
-- Biometric authentication (planned)
+- Floating action buttons for quick access
+- Progressive Web App (PWA) capabilities
+- Offline support (planned)
 
 ## 🧪 Testing
 
