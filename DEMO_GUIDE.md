@@ -49,37 +49,27 @@ The web application is now running at **http://localhost:3000**
 - See detailed logs of all system actions
 - Filter by user, action type, or date
 
-## 📱 Mobile Application Demo
+## 📱 Mobile-Responsive Web Features
 
-### Setup Requirements
-To run the mobile application, you'll need:
+### Mobile Browser Access
+The web application is fully responsive and works on all mobile devices:
 
-1. **React Native CLI**:
-   ```bash
-   npm install -g react-native-cli
-   ```
+1. **Access via Mobile Browser**:
+   - Open any modern mobile browser (Chrome, Safari, Firefox)
+   - Navigate to your deployed web application URL
+   - The interface automatically adapts to mobile screens
 
-2. **Android Studio** (for Android) or **Xcode** (for iOS)
+2. **Mobile Features Available**:
+   - Camera access for photo capture
+   - GPS location services
+   - Touch-friendly navigation
+   - QR code scanning
+   - Responsive design
 
-3. **Install Dependencies**:
-   ```bash
-   cd mobile
-   npm install
-   ```
-
-### Running the Mobile App
-
-#### For Android:
-```bash
-cd mobile
-npm run android
-```
-
-#### For iOS (Mac only):
-```bash
-cd mobile
-npm run ios
-```
+3. **Progressive Web App (PWA)**:
+   - Add to home screen for app-like experience
+   - Works offline (planned feature)
+   - Push notifications (planned feature)
 
 ### Mobile App Features Demo
 
@@ -186,12 +176,12 @@ npm run ios
 4. Submit movement request
 5. Track movement status
 
-### Scenario 3: Mobile Asset Lookup
-1. Open mobile app
+### Scenario 3: Mobile Browser Asset Lookup
+1. Open web app on mobile browser
 2. Use QR scanner to find asset
-3. View asset details
-4. Take a new photo
-5. Update asset information
+3. View asset details on mobile-optimized interface
+4. Take a new photo using mobile camera
+5. Update asset information with touch-friendly forms
 
 ### Scenario 4: User Management
 1. Go to Users section
@@ -256,9 +246,10 @@ npm run ios
 
 ### Common Issues
 - **Backend not starting**: Check database connection and dependencies
-- **Mobile app not building**: Verify React Native environment setup
+- **Mobile camera not working**: Verify browser camera permissions
 - **Photos not uploading**: Check file permissions and storage configuration
-- **QR scanning not working**: Verify camera permissions on mobile device
+- **QR scanning not working**: Verify camera permissions in mobile browser
+- **Mobile layout issues**: Clear browser cache and refresh
 
 ### Support
 - Check console logs for errors
