@@ -9,54 +9,54 @@ const {
   getLocationTypes,
   getLocationsBySite
 } = require('../controllers/location.controller');
-const { authenticateToken } = require('../middleware/auth.middleware');
+const { verifyToken } = require('../middleware/auth.middleware');
 const { checkPermission } = require('../middleware/permission.middleware');
 
 // Get all locations
-router.get('/', 
-  authenticateToken, 
+router.get('/',
+  verifyToken,
   checkPermission('locations', 'read'),
   getLocations
 );
 
 // Get location types
-router.get('/types', 
-  authenticateToken, 
+router.get('/types',
+  verifyToken,
   checkPermission('locations', 'read'),
   getLocationTypes
 );
 
 // Get locations by site
-router.get('/site/:siteId', 
-  authenticateToken, 
+router.get('/site/:siteId',
+  verifyToken,
   checkPermission('locations', 'read'),
   getLocationsBySite
 );
 
 // Get location by ID
-router.get('/:id', 
-  authenticateToken, 
+router.get('/:id',
+  verifyToken,
   checkPermission('locations', 'read'),
   getLocationById
 );
 
 // Create new location
-router.post('/', 
-  authenticateToken, 
+router.post('/',
+  verifyToken,
   checkPermission('locations', 'write'),
   createLocation
 );
 
 // Update location
-router.put('/:id', 
-  authenticateToken, 
+router.put('/:id',
+  verifyToken,
   checkPermission('locations', 'write'),
   updateLocation
 );
 
 // Delete location
-router.delete('/:id', 
-  authenticateToken, 
+router.delete('/:id',
+  verifyToken,
   checkPermission('locations', 'delete'),
   deleteLocation
 );

@@ -8,47 +8,47 @@ const {
   deleteSite,
   getSiteTypes
 } = require('../controllers/site.controller');
-const { authenticateToken } = require('../middleware/auth.middleware');
+const { verifyToken } = require('../middleware/auth.middleware');
 const { checkPermission } = require('../middleware/permission.middleware');
 
 // Get all sites
-router.get('/', 
-  authenticateToken, 
+router.get('/',
+  verifyToken,
   checkPermission('sites', 'read'),
   getSites
 );
 
 // Get site types
-router.get('/types', 
-  authenticateToken, 
+router.get('/types',
+  verifyToken,
   checkPermission('sites', 'read'),
   getSiteTypes
 );
 
 // Get site by ID
-router.get('/:id', 
-  authenticateToken, 
+router.get('/:id',
+  verifyToken,
   checkPermission('sites', 'read'),
   getSiteById
 );
 
 // Create new site
-router.post('/', 
-  authenticateToken, 
+router.post('/',
+  verifyToken,
   checkPermission('sites', 'write'),
   createSite
 );
 
 // Update site
-router.put('/:id', 
-  authenticateToken, 
+router.put('/:id',
+  verifyToken,
   checkPermission('sites', 'write'),
   updateSite
 );
 
 // Delete site
-router.delete('/:id', 
-  authenticateToken, 
+router.delete('/:id',
+  verifyToken,
   checkPermission('sites', 'delete'),
   deleteSite
 );
